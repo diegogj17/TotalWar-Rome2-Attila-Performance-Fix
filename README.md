@@ -1,58 +1,49 @@
 # Total War Launchers
 
-Custom launchers that inject `SetProcessAffinity` between Steam/the CA launcher and the
-real game executable, working around loading-screen hangs caused by too many CPU
-cores/threads being assigned to these older Total War titles.
+Custom launchers for Total War: Rome II and Total War: Attila that fix battle-loading-screen
+hangs on modern CPUs by capping the game's CPU affinity, while keeping Steam Workshop mods
+working correctly.
 
-## Flow
+## How it works
 
 ```
-Steam -> Creative Assembly Launcher -> <Game>.exe (custom launcher) -> SetProcessAffinity*.exe
-                                                                     -> <Game>_original.exe -> Juego
+Steam -> Creative Assembly Launcher -> <Game>.exe (this launcher)
+      -> SetProcessAffinity*.exe -> <Game>_original.exe -> Game
 ```
 
-## Projects
+Steam/CA still launch what they think is the game's exe, but that exe has been swapped for
+a small launcher which starts the CPU-affinity setter and then the real (renamed) game exe.
 
-- `Rome2Launcher/` — replaces `Rome2.exe` in the Total War: Rome II install folder.
-  Original game exe renamed to `Rome2_original.exe`.
-- `SetProcessAffinityRome2/` — watches for `Rome2_original.exe` and caps its CPU affinity.
-- `AttilaLauncher/` — replaces `Attila.exe` in the Total War: Attila install folder.
-  Original game exe renamed to `Attila_original.exe`.
-- `SetProcessAffinityAttila/` — watches for `Attila_original.exe` and caps its CPU affinity.
+## Install
 
-## Why `Process.Start()` needs a resolved absolute path
+Download the exes from the [latest release](https://github.com/diegogj17/TotalWarLaunchers/releases/latest).
 
-`Process.Start()` with a relative path or bare filename failed with
-`Win32Exception (2): The system cannot find the file specified`, even though the target
-exe existed and opened fine via double-click. The fix is to always pass a full path
-resolved from `AppContext.BaseDirectory` (the folder the launcher itself lives in,
-i.e. the game's install folder) rather than a relative filename — this also makes the
-launcher portable to any install location, no hardcoded Steam path needed.
+**Rome II** — in `...\Steam\steamapps\common\Total War Rome II`:
+1. Rename `Rome2.exe` to `Rome2_original.exe`.
+2. Put `Rome2Launcher.exe` in the folder and rename it to `Rome2.exe`.
+3. Put `SetProcessAffinityRome2.exe` in the same folder.
 
-The engine also looks for `used_mods.txt` in the child process's **working directory**,
-not its exe directory, so `ProcessStartInfo.WorkingDirectory` is set explicitly to the
-game folder and the CA launcher's original CLI args are forwarded through — otherwise
-mods silently fail to load even with everything else working.
+**Attila** — in `...\Steam\steamapps\common\Total War Attila`:
+1. Rename `Attila.exe` to `Attila_original.exe`.
+2. Put `AttilaLauncher.exe` in the folder and rename it to `Attila.exe`.
+3. Put `SetProcessAffinityAttila.exe` in the same folder.
+4. One-time tweak in `%AppData%\The Creative Assembly\Attila\scripts\preferences.script.txt`
+   (run the game once first if it doesn't exist yet): set `number_of_threads` to `8` and
+   `gfx_video_memory` to `-4000`.
 
-## Building
+If Steam verifies/updates the game files, it will overwrite `<Game>.exe` with the original
+and undo this — just repeat the steps above.
+
+## Building from source
 
 ```
 dotnet publish <ProjectFolder> -c Release
 ```
 
-Each project is self-contained, single-file, `win-x64`. The published `.exe` lands in
+Each project is self-contained, single-file, `win-x64`; the exe lands in
 `<ProjectFolder>/bin/Release/<tfm>/win-x64/publish/`.
-
-## Deploying
-
-1. In the game's install folder, rename the original game exe to `<Game>_original.exe`.
-2. Copy the published launcher exe in as `<Game>.exe`.
-3. Copy the published `SetProcessAffinity*.exe` into the same folder.
-
-See [INSTRUCCIONES.md](INSTRUCCIONES.md) for the full deployment steps (in Spanish),
-including the Attila `preferences.script.txt` tweak.
 
 ## Credits
 
-The CPU affinity approach (`SetProcessAffinityRome2`/`SetProcessAffinityAttila`) is
-based on [serkan-erol/Set-CPU-Affinity-for-Rome-2](https://github.com/serkan-erol/Set-CPU-Affinity-for-Rome-2).
+CPU affinity approach based on
+[serkan-erol/Set-CPU-Affinity-for-Rome-2](https://github.com/serkan-erol/Set-CPU-Affinity-for-Rome-2).
