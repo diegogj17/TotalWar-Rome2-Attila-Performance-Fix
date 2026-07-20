@@ -4,6 +4,8 @@
  * your desired application and build the console app again)
  */
 // Put the .exe of this program (or its shortcut) into win+R > shell:startup to make it run at Windows startup
+//
+// Based on https://github.com/serkan-erol/Set-CPU-Affinity-for-Rome-2 by serkan-erol
 
 // Without setting CPU affinity, some Total War titles get stuck at battle loading screens on many modern systems
 // This program makes it easier to set CPU affinity by handling it automatically, when the game is launched

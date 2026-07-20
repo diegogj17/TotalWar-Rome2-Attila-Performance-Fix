@@ -5,9 +5,9 @@ using System.Windows.Forms;
 
 try
 {
-    string game = @"C:\Program Files (x86)\Steam\steamapps\common\Total War Rome II\Rome2_original.exe";
-    string affinity = @"C:\Program Files (x86)\Steam\steamapps\common\Total War Rome II\SetProcessAffinity.exe";
-    string gameDir = Path.GetDirectoryName(game)!;
+    string gameDir = AppContext.BaseDirectory;
+    string game = Path.Combine(gameDir, "Rome2_original.exe");
+    string affinity = Path.Combine(gameDir, "SetProcessAffinityRome2.exe");
 
     Process.Start(affinity);
 

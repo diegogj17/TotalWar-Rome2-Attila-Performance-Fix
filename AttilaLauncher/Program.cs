@@ -5,9 +5,9 @@ using System.Windows.Forms;
 
 try
 {
-    string game = @"C:\Program Files (x86)\Steam\steamapps\common\Total War Attila\Attila_original.exe";
-    string affinity = @"C:\Program Files (x86)\Steam\steamapps\common\Total War Attila\SetProcessAffinityAttila.exe";
-    string gameDir = Path.GetDirectoryName(game)!;
+    string gameDir = AppContext.BaseDirectory;
+    string game = Path.Combine(gameDir, "Attila_original.exe");
+    string affinity = Path.Combine(gameDir, "SetProcessAffinityAttila.exe");
 
     Process.Start(affinity);
 

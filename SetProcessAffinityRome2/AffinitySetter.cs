@@ -1,9 +1,11 @@
 ﻿// A simple program to set CPU affinity for Rome2.exe
-/* (or any other process for that matter, 
- * if you change the GAME_PROCESS_NAME constant to 
- * your desired application and build the console app again) 
+/* (or any other process for that matter,
+ * if you change the GAME_PROCESS_NAME constant to
+ * your desired application and build the console app again)
  */
 // Put the .exe of this program (or its shortcut) into win+R > shell:startup to make it run at Windows startup
+//
+// Based on https://github.com/serkan-erol/Set-CPU-Affinity-for-Rome-2 by serkan-erol
 
 // Without setting CPU affinity, Rome 2 gets stuck at battle loading screens on many modern systems
 // This program makes it easier to set CPU affinity by handling it automatically, when the game is launched
