@@ -16,7 +16,7 @@ a small launcher which starts the CPU-affinity setter and then the real (renamed
 
 ## Install
 
-Download the exes from the [latest release](https://github.com/diegogj17/TotalWarLaunchers/releases/latest).
+Download the exes from the [latest release](https://github.com/diegogj17/TotalWar-Rome2-Attila-Performance-Fix/releases/latest).
 
 **Rome II** — in `...\Steam\steamapps\common\Total War Rome II`:
 1. Rename `Rome2.exe` to `Rome2_original.exe`.
