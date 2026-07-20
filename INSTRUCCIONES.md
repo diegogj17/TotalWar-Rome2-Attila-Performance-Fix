@@ -26,6 +26,42 @@ juego, el problema se resolvió de forma fiable. Por eso los launchers llevan
 la ruta de instalación de Steam escrita directamente en el código, en vez de
 depender de `AppContext.BaseDirectory` + un nombre relativo.
 
+## Versión del exe (para que el launcher de CA muestre la versión real)
+
+El launcher de Creative Assembly lee el `FileVersion`/`ProductVersion` del
+`.exe` que hay en la carpeta del juego. Como ese `.exe` ahora es nuestro
+launcher, por defecto .NET le pondría `1.0.0.0` y el launcher mostraría la
+versión equivocada. Por eso cada `.csproj` fija `FileVersion`/`Version` para
+que coincidan exactamente con el `_original.exe` correspondiente
+(comprobar con `(Get-Item ruta).VersionInfo` en PowerShell si se actualiza
+el juego a una versión nueva).
+
+## Directorio de trabajo y argumentos (para que carguen los mods)
+
+El motor de Total War busca `used_mods.txt` en el **directorio de trabajo**
+del proceso al arrancar, no en la carpeta del ejecutable. Si no se fija
+explícitamente, el proceso hijo hereda el CWD de quien lo lanzó (el launcher
+de CA), que puede no ser la carpeta del juego, y los mods no cargan aunque
+`used_mods.txt` exista y esté bien generado. Por eso `Program.cs` fija
+`ProcessStartInfo.WorkingDirectory` a la carpeta del juego y además reenvía
+los argumentos de línea de comandos recibidos al ejecutable real.
+
+## Attila: preferences.script (number_of_threads y gfx_video_memory)
+
+Tras instalar Attila y ejecutarlo al menos una vez (para que se genere el
+archivo), hay que editar manualmente (una sola vez):
+
+```
+C:\Users\<TuUsuario>\AppData\Roaming\The Creative Assembly\Attila\scripts\preferences.script.txt
+```
+
+Buscar estas dos claves y dejarlas así:
+
+```
+number_of_threads 8; # ...
+gfx_video_memory -4000; # ...
+```
+
 ## Compilar
 
 Desde la raíz del repo, para cada proyecto:
