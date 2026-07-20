@@ -13,6 +13,13 @@
 
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <!-- Must match Attila_original.exe so the CA launcher detects the real game version and mods load -->
+    <FileVersion>1.6.0.0</FileVersion>
+    <AssemblyVersion>1.6.0.0</AssemblyVersion>
+    <Version>3.2.1.0</Version>
+    <InformationalVersion>3.2.1.0</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
 </Project>
