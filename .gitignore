@@ -1,0 +1,7 @@
+# Build intermediates - the published single-file exes are force-added explicitly
+**/obj/
+**/bin/
+
+# IDE
+.idea/
+.vs/
